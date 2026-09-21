@@ -1,299 +1,375 @@
 # MERN Admin Web
 
-`mern-admin-web` 是一个基于 MERN 技术栈的后台管理系统，包含管理员认证、客户管理、线索管理、产品管理、仪表盘统计和账户设置等完整前后端功能。前端使用 React + Ant Design 构建管理界面，后端使用 Express + MongoDB 提供认证与业务 API。
+这是一个已经完成前后端分离重构的现代后台管理项目，前端迁移为 `Vite + React 19`，后端升级为 `Express 5 + Mongoose 9`，目录统一拆分为 `client` 和 `server` 两部分。项目保留并升级了管理员、客户、线索、产品、仪表盘、账户设置等完整业务功能，同时把路由、组件、请求方法、状态管理和服务层全部按新架构重新整理。
 
-## 项目定位
+## 项目目标
 
-- 适合作为中小型后台管理项目的基础工程
-- 提供可直接运行的管理员登录与 JWT 鉴权链路
-- 提供客户、线索、产品、管理员四类核心业务数据的 CRUD 能力
-- 提供基于真实数据库数据的 Dashboard 概览与最近数据展示
-
-## 功能模块
-
-- 认证模块
-  - 管理员登录
-  - 退出登录
-  - JWT 鉴权
-  - 受保护路由控制
-
-- 仪表盘模块
-  - 线索预算汇总
-  - 客户、产品、管理员总量统计
-  - 线索转化与产品可用率展示
-  - 最近线索、最近产品列表
-
-- 管理员模块
-  - 管理员列表
-  - 管理员新增、查看、编辑、删除
-  - 管理员密码修改
-  - 当前登录管理员资料查看
-
-- 客户模块
-  - 客户列表
-  - 客户新增、查看、编辑、删除
-  - 客户搜索
-  - 自定义选择客户页面
-
-- 线索模块
-  - 线索列表
-  - 线索新增、查看、编辑、删除
-  - 线索搜索
-
-- 产品模块
-  - 产品列表
-  - 产品新增、查看、编辑、删除
-  - 产品搜索
-
-## 页面说明
-
-- `/login`
-  - 管理员登录页
-  - 使用后端真实登录接口
-
-- `/`
-  - Dashboard 首页
-  - 展示总览统计、线索与产品概况、最近数据
-
-- `/customer`
-  - 客户管理页
-  - 对应客户 CRUD 接口
-
-- `/selectcustomer`
-  - 自定义客户选择页
-  - 适合做搜索选择、表单联动等场景
-
-- `/lead`
-  - 线索管理页
-  - 对应线索 CRUD 接口
-
-- `/product`
-  - 产品管理页
-  - 对应产品 CRUD 接口
-
-- `/admin`
-  - 管理员管理页
-  - 支持管理员新增、编辑、删除、密码更新
-
-- `/settings`
-  - 当前登录管理员资料页
-  - 展示账户基础信息并支持退出登录
-
-- `/logout`
-  - 退出登录页
-  - 会调用后端退出接口并清理本地登录态
-
-## 接口说明
-
-所有接口统一挂载在 `/api` 下。
-
-### 认证接口
-
-- `POST /api/login`
-  - 管理员登录
-
-- `POST /api/logout`
-  - 退出登录
-
-### Dashboard 接口
-
-- `GET /api/dashboard/summary`
-  - 返回首页统计数据、线索概况、产品概况、最近线索、最近产品
-
-### 管理员接口
-
-- `GET /api/admin/profile`
-  - 返回当前登录管理员资料
-
-- `POST /api/admin/create`
-- `GET /api/admin/read/:id`
-- `PATCH /api/admin/update/:id`
-- `DELETE /api/admin/delete/:id`
-- `PATCH /api/admin/password-update/:id`
-- `GET /api/admin/search`
-- `GET /api/admin/list`
-
-### 客户接口
-
-- `POST /api/client/create`
-- `GET /api/client/read/:id`
-- `PATCH /api/client/update/:id`
-- `DELETE /api/client/delete/:id`
-- `GET /api/client/search`
-- `GET /api/client/list`
-
-### 线索接口
-
-- `POST /api/lead/create`
-- `GET /api/lead/read/:id`
-- `PATCH /api/lead/update/:id`
-- `DELETE /api/lead/delete/:id`
-- `GET /api/lead/search`
-- `GET /api/lead/list`
-
-### 产品接口
-
-- `POST /api/product/create`
-- `GET /api/product/read/:id`
-- `PATCH /api/product/update/:id`
-- `DELETE /api/product/delete/:id`
-- `GET /api/product/search`
-- `GET /api/product/list`
+- 完整前后端分离
+- 现代化目录结构
+- 统一使用新的组件库和最新写法
+- 保留原有后台核心功能并保证链路可用
+- 让页面、接口、状态流和数据模型之间关系清晰
 
 ## 技术栈
 
-- 后端
-  - Node.js
-  - Express
-  - MongoDB
-  - Mongoose
-  - express-session
-  - JSON Web Token
+### 前端
 
-- 前端
-  - React 17
-  - React Router 5
-  - Redux
-  - Redux Thunk
-  - Ant Design 4
-  - Axios
-  - CRACO
-  - Less
+- React 19
+- Vite 8
+- React Router 7
+- Ant Design 6
+- TanStack Query 5
+- Zustand 5
+- Axios
+- Day.js
 
-## 架构说明
+### 后端
 
-- 后端采用 `routes -> controllers -> models` 分层结构
-- 通用 CRUD 逻辑抽离到 `controllers/crudController`
-- 认证接口与业务接口分离，业务接口统一经过 JWT 校验
-- 前端采用页面、模块、组件、表单拆分结构
-- 数据请求统一走 `frontend/src/request`
-- 登录态使用 cookie 中的 `x-auth-token` 维护
+- Node.js
+- Express 5
+- MongoDB
+- Mongoose 9
+- Zod 4
+- JSON Web Token
+- Helmet
+- CORS
+- Morgan
 
 ## 目录结构
 
 ```text
 mern-admin-web
-├── app.js                     # Express 应用配置
-├── server.js                  # 后端启动入口
-├── controllers/               # 控制器
-├── handlers/                  # 错误处理
-├── models/                    # Mongoose 模型
-├── routes/                    # API 路由
-├── setup/                     # 初始化脚本
-├── public/                    # 后端静态资源
-├── frontend/                  # React 前端
-│   ├── public/
-│   └── src/
-├── .variables.env.example     # 环境变量示例
-├── package.json               # 后端依赖
+├── client
+│   ├── public
+│   ├── src
+│   │   ├── app
+│   │   ├── components
+│   │   ├── hooks
+│   │   ├── layouts
+│   │   ├── lib
+│   │   ├── page
+│   │   ├── router
+│   │   ├── services
+│   │   ├── store
+│   │   └── utils
+│   ├── .env.example
+│   ├── index.html
+│   ├── jsconfig.json
+│   ├── package.json
+│   └── vite.config.js
+├── server
+│   ├── scripts
+│   ├── src
+│   │   ├── config
+│   │   ├── controllers
+│   │   ├── middleware
+│   │   ├── models
+│   │   ├── routes
+│   │   ├── services
+│   │   ├── utils
+│   │   └── validators
+│   ├── tests
+│   ├── .env.example
+│   └── package.json
+├── .gitignore
+├── package.json
 └── README.md
 ```
 
-## 环境要求
+## 前端架构说明
 
-- Node.js 14.x
-- MongoDB 4.x 或更高版本
-- npm 6.x 或更高版本
+前端已经按新的项目组织方式拆分：
+
+- `router`
+  - 单独存放路由定义、登录路由守卫、受保护路由守卫、导航配置
+- `page`
+  - 所有页面统一放在 `page` 目录
+  - 页面按功能模块拆分，例如 `admin`、`customer`、`lead`、`product`
+- `components`
+  - 公共组件、表单字段组件、布局组件、仪表盘组件、通用 CRUD 组件全部拆开
+- `services`
+  - 统一放接口请求方法
+- `hooks`
+  - 抽离页面通用逻辑，例如通用 CRUD 管理逻辑
+- `store`
+  - 登录态统一使用 Zustand 管理
+- `lib`
+  - 放统一的请求实例和拦截器
+- `@/`
+  - 已配置前端路径别名，文件引入统一使用 `@/`
+
+## 后端架构说明
+
+后端已经按现代服务端项目方式拆分：
+
+- `config`
+  - 数据库连接、环境变量配置
+- `controllers`
+  - 接口控制器
+- `middleware`
+  - 鉴权、中间件校验、统一错误处理
+- `models`
+  - Mongoose 数据模型
+- `routes`
+  - 按业务模块拆分路由
+- `services`
+  - 抽离业务聚合逻辑和通用数据操作
+- `validators`
+  - 使用 Zod 做请求参数校验
+- `tests`
+  - 使用 `mongodb-memory-server + supertest` 做接口链路验证
+
+## 功能模块
+
+### 认证
+
+- 管理员登录
+- 当前用户信息获取
+- 退出登录
+- JWT 鉴权
+- 前端自动注入 Bearer Token
+- 401 自动清理登录态
+
+### Dashboard
+
+- 管理员总数
+- 客户总数
+- 线索总数
+- 产品总数
+- 本月新增客户
+- 本月新增线索
+- 线索预算总额
+- 线索转化率
+- 产品可用率
+- 最近线索列表
+- 最近产品列表
+
+### 管理员
+
+- 管理员列表
+- 管理员新增
+- 管理员编辑
+- 管理员删除
+- 管理员密码重置
+
+### 客户
+
+- 客户列表
+- 客户新增
+- 客户编辑
+- 客户删除
+- 客户搜索
+- 客户卡片选择页
+
+### 线索
+
+- 线索列表
+- 线索新增
+- 线索编辑
+- 线索删除
+- 线索搜索
+- 状态管理
+
+### 产品
+
+- 产品列表
+- 产品新增
+- 产品编辑
+- 产品删除
+- 产品搜索
+
+### 账户设置
+
+- 当前登录管理员资料展示
+
+## 页面路由
+
+- `/login`
+  - 登录页
+
+- `/`
+  - 仪表盘首页
+
+- `/admins`
+  - 管理员管理
+
+- `/customers`
+  - 客户管理
+
+- `/customer-select`
+  - 客户卡片选择页
+
+- `/leads`
+  - 线索管理
+
+- `/products`
+  - 产品管理
+
+- `/settings`
+  - 账户设置
+
+## 接口概览
+
+后端统一前缀：`/api`
+
+### 认证
+
+- `POST /api/auth/login`
+- `GET /api/auth/me`
+- `POST /api/auth/logout`
+
+### 仪表盘
+
+- `GET /api/dashboard/summary`
+
+### 管理员
+
+- `GET /api/admins`
+- `POST /api/admins`
+- `GET /api/admins/:id`
+- `PATCH /api/admins/:id`
+- `PATCH /api/admins/:id/password`
+- `DELETE /api/admins/:id`
+
+### 客户
+
+- `GET /api/customers`
+- `POST /api/customers`
+- `GET /api/customers/:id`
+- `PATCH /api/customers/:id`
+- `DELETE /api/customers/:id`
+
+### 线索
+
+- `GET /api/leads`
+- `POST /api/leads`
+- `GET /api/leads/:id`
+- `PATCH /api/leads/:id`
+- `DELETE /api/leads/:id`
+
+### 产品
+
+- `GET /api/products`
+- `POST /api/products`
+- `GET /api/products/:id`
+- `PATCH /api/products/:id`
+- `DELETE /api/products/:id`
+
+## 环境变量
+
+### 服务端
+
+复制 `server/.env.example` 为 `server/.env`
+
+```env
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/mern-admin-web
+JWT_SECRET=replace-with-a-secure-secret
+JWT_EXPIRES_IN=1d
+CLIENT_URL=http://localhost:5173
+DEFAULT_ADMIN_EMAIL=admin@demo.com
+DEFAULT_ADMIN_PASSWORD=Admin123456!
+DEFAULT_ADMIN_FIRST_NAME=System
+DEFAULT_ADMIN_LAST_NAME=Admin
+```
+
+### 前端
+
+复制 `client/.env.example` 为 `client/.env`
+
+```env
+VITE_API_BASE_URL=http://localhost:5000/api
+```
 
 ## 安装与启动
 
-### 1. 安装后端依赖
+### 1. 安装依赖
+
+项目使用 npm workspace，根目录直接安装即可：
 
 ```bash
 npm install
 ```
 
-### 2. 配置后端环境变量
+### 2. 初始化示例数据
 
-复制示例文件并填写实际配置：
-
-```bash
-cp .variables.env.example .variables.env
-```
-
-`.variables.env` 需要包含以下字段：
-
-```env
-PORT=8888
-DATABASE=mongodb://127.0.0.1:27017/mern-admin-web
-SECRET=mern_admin_web_secret
-KEY=mern_admin_web_sid
-JWT_SECRET=mern_admin_web_jwt_secret
-```
-
-### 3. 初始化默认管理员
+确保 MongoDB 可用后执行：
 
 ```bash
-npm run setup
+npm run seed
 ```
 
-初始化完成后会创建默认管理员账号：
+会创建默认管理员和一组示例客户、线索、产品数据。
+
+默认管理员账号：
 
 - Email: `admin@demo.com`
-- Password: `123456`
+- Password: `Admin123456!`
 
-### 4. 启动后端服务
+### 3. 启动开发环境
 
 ```bash
 npm run dev
 ```
 
-或
+启动后：
+
+- 前端地址：`http://localhost:5173`
+- 后端地址：`http://localhost:5000`
+
+### 4. 单独启动
+
+只启动后端：
 
 ```bash
-npm start
+npm run dev:server
 ```
 
-默认启动地址：
-
-- Backend: `http://localhost:8888`
-
-### 5. 安装前端依赖
+只启动前端：
 
 ```bash
-cd frontend
-npm install
+npm run dev:client
 ```
 
-### 6. 启动前端服务
+## 验证命令
+
+### 后端接口验证
 
 ```bash
-npm start
+npm run test:server
 ```
 
-默认启动地址：
-
-- Frontend: `http://localhost:3000`
-
-## 前后端联调说明
-
-- 前端本地开发默认请求 `http://localhost:8888/api/`
-- 生产环境或 `REACT_APP_DEV_REMOTE=remote` 时，请求线上 API
-- 后端业务接口需要有效的 `x-auth-token`
-- 登录成功后，前端会自动写入 token 并用于后续 CRUD 请求
-
-## 常用脚本
-
-### 后端
+如本机没有现成 MongoDB，可直接使用 Docker 验证：
 
 ```bash
-npm start        # 启动后端
-npm run dev      # nodemon 开发模式
-npm run setup    # 初始化默认管理员
+npm run test:server:docker
 ```
 
-### 前端
+### 前端构建验证
 
 ```bash
-npm start        # 启动前端
-npm run build    # 打包前端
-npm test         # 运行测试
+npm run build
 ```
 
-## 当前项目特点
+### 整体验证
 
-- 主导航页面都已对应可用页面或接口
-- Dashboard 使用真实接口返回的统计数据
-- Settings 页面使用真实管理员资料接口
-- 登录、退出登录、CRUD 请求使用统一鉴权链路
-- 已清理模板遗留文档、重复静态文件和无引用演示代码
+```bash
+npm run verify
+```
+
+如果需要带 Docker 一起完成后端验证，可执行：
+
+```bash
+npm run verify:docker
+```
+
+## 当前项目改造结果
+
+- 前后端已经完全拆分为 `client` 和 `server`
+- 前端由老旧 CRA 方案升级到 Vite
+- 前端目录已重新按 `router / page / components / services / hooks / store` 拆分
+- 后端目录已重新按 `config / controllers / middleware / models / routes / services / validators` 拆分
+- 旧版模板目录和无用文件已清理
+- 页面 UI 已按新的组件库风格重做
+- 通用 CRUD 逻辑已经抽离
+- 登录、仪表盘、管理员、客户、线索、产品、设置页已形成完整链路
